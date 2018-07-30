@@ -46,6 +46,16 @@
             height: 150px;
         }
     }
+
+    .about-info {
+        grid-template-areas: 
+        'bio image'
+        'bio'
+        'job1'
+        'job2';
+
+        grid-template-areas: 1fr;
+    }
 }
 
 // Phones
