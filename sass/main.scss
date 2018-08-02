@@ -24,10 +24,30 @@ h1, h2, h3 {
         font-size: 6rem;
     }
 
+    &.lg-name{
+        font-size: 6rem;
+        &:hover {
+            //color: $secondary-color;
+        }
+    }
+
+    &.virginia-tech{
+        margin-bottom: 2rem;
+        padding: 0.2rem 1rem;
+        background: rgba(lighten($primary-color, 2), 0.5);
+        &:hover {
+            color: maroon;
+        }
+    }
+
     &.sm-heading{
         margin-bottom: 2rem;
         padding: 0.2rem 1rem;
         background: rgba(lighten($primary-color, 2), 0.5);
+    }
+
+    &.job-color{
+        color: $secondary-color;
     }
 }
 
@@ -50,10 +70,8 @@ main {
     padding: 4rem;
     //height: 100%;
     min-height: calc(100vh - 60px);
-
     .icons {
         margin-top: 1rem;
-
         a {
             padding: 0.4rem;
             &:hover {
@@ -83,7 +101,15 @@ main {
 .bio-image{
     grid-area: bioimage;
     margin: auto;
-    border-radius: 50%;
+    //border-radius: 50%;
+    border: $secondary-color 3px solid;
+}
+
+.contact-picture {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
     border: $secondary-color 3px solid;
 }
 
@@ -115,7 +141,8 @@ main {
 
     img {
         border: 3px white solid;
-
+        height: 300px;
+        max-width: 400px;
         &:hover{
             opacity: 0.5;
             border-color: $secondary-color;
@@ -179,5 +206,6 @@ main {
     color: set-text-color($primary-color);
     height: 60px;
 }
+
 
 @import 'mobile';
