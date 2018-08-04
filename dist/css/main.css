@@ -123,9 +123,10 @@ h1, h2, h3 {
   margin: 0;
   font-weight: 400; }
   h1.lg-heading, h2.lg-heading, h3.lg-heading {
-    font-size: 6rem; }
+    font-size: 6rem;
+    border-bottom: #2fd16d 5px solid; }
   h1.lg-name, h2.lg-name, h3.lg-name {
-    font-size: 6rem; }
+    font-size: 7rem; }
   h1.virginia-tech, h2.virginia-tech, h3.virginia-tech {
     margin-bottom: 2rem;
     padding: 0.2rem 1rem;
@@ -133,8 +134,9 @@ h1, h2, h3 {
     h1.virginia-tech:hover, h2.virginia-tech:hover, h3.virginia-tech:hover {
       color: maroon; }
   h1.sm-heading, h2.sm-heading, h3.sm-heading {
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     padding: 0.2rem 1rem;
+    font-size: 2rem;
     background: rgba(82, 81, 81, 0.5); }
   h1.job-color, h2.job-color, h3.job-color {
     color: #2fd16d; }

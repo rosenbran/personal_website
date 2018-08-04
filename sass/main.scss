@@ -22,10 +22,12 @@ h1, h2, h3 {
 
     &.lg-heading{
         font-size: 6rem;
+        border-bottom: $secondary-color 5px solid;
     }
 
     &.lg-name{
-        font-size: 6rem;
+        font-size: 7rem;
+        
         &:hover {
             //color: $secondary-color;
         }
@@ -41,8 +43,9 @@ h1, h2, h3 {
     }
 
     &.sm-heading{
-        margin-bottom: 2rem;
+        margin-bottom: 1rem;
         padding: 0.2rem 1rem;
+        font-size: 2rem;
         background: rgba(lighten($primary-color, 2), 0.5);
     }
 
