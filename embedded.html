@@ -61,7 +61,7 @@
             Embedded Systems Project
         </h2> 
         <h3 class="sm-heading">
-            Objective
+            <span class="text-secondary">Objective</span>
         </h3>
         <p class="sm-heading">
                 This was a project in Virginia Tech's ECE 4534, Embedded Systems Design. 
@@ -69,16 +69,121 @@
                 around a semester long team project. The team is given a budget of $500, four PIC 32mx boards, four
                 raspberry pis, and a variety of other pmod shields.  
         </p>
+        <p class="sm-heading">
+            With the budget and supplies limitations in mind, my team set off to establish a use case to pursue for the semester.
+            The scenario which we decided on was a simulation of a firefighter dealing with an arsonist. Both vehicles will be set
+            in separate locations and the arsonist will set off. The arsonist bot will be traversing the city in an attempt to find the 
+            green tiles on the ground. When the arsonist finds the green tiles, it will "set a fire". Once the fire is set, the firefighter bot will
+            set off. This sets off the scenario of the two bots trying to set and put out fires. 
+        </p>
+        <p class="sm-heading">
+            In order to see a more technical view of the project, I will start by going over the game board.
+        </p>
         <h3 class="sm-heading">
-            Game Board
+            <span class="text-secondary">Game Board</span>
         </h3>
+        
         <div class="projects">
             <img src="img/gameboard.png">
         </div>
-        <p>
-
+        <h4>
+            <span class="text-secondary">Figure 1:</span> Game Board
+        </h4>
+        <p class="sm-heading">
+            Starting off, we worked at declaring a basic configuration for the project. The first definition of this game board
+            is the width of the roads which the rovers will traverse. Since each of the rovers are 10 cm in width, we defined the roads to be
+            30 cm wide. This definition of the road size would help me be able to keep the rover driving in a straight line and avoid collisions with the walls.
+            Along with this, there is a definition of where each of the tiles are in the middle of the intersections. This also helped me keep the rover from going
+            off of its intended route when there was no longer walls to dictate where the rover was in the roadway.
         </p>
+        <h3 class="sm-heading">
+            <span class="text-secondary">Sensors</span>
+        </h3>
         
+        <div class="projects">
+            <img src="img/irsensor.png">
+        </div>
+        <h4>
+            <span class="text-secondary">Figure 2:</span> Sharp GP2Y0A02YK0F
+        </h4>
+        <p class="sm-heading">
+            For this project, we ended up using two types of sensors to accomplish two very different jobs. The first sensor we used was the Sharp GP2Y0A02YK0F IR Sensor.
+            I positioned four of these sensors on the four corners of the rover in order to account for the distances from the wall from each corner. Each of these sensors were read
+            using an ADC interrupt sweep from the pic32 to the inputs for each of the sensors. The tricky aspect of dealing with these sensors is that since all four of them will be 
+            creating values sequentially, there will be spikes of power usage for each sensor. In order to account for this spread of values, I created a lookup table for each of the 
+            sensors for each distance possible in the range for the sensor. 
+        </p>
+        <div class="projects">
+            <img src="img/colorsensor.png">
+        </div>
+        <h4>
+            <span class="text-secondary">Figure 3:</span> Color Sensor
+        </h4>
+        <p class="sm-heading">
+            The color sensor was used in order to determine the color of the ground under the rover. This sensor communicated to the rover through I2C communication. A lookup table was
+            written in order to determine what the hexidecimal values the sensor was sending to the PIC32 brain of the rover.  
+        </p>
+        <h3 class="sm-heading">
+            <span class="text-secondary">Communication</span>
+        </h3>
+        <p class="sm-heading">
+            Communication was very important for this project. We had to have multiple pic32 boards communicating back to an integration point of a python server with no droppage. Each of the 
+            PIC32 boards were given a WiFly chip. These are configuable devices which are able to fill up an onboard FIFO buffer through UART communication in order to send a tcp message. On the PIC board,
+            there are two hardware interrupts in order to send and receive messages. These two interrupts will poll two char variable buffers to push characters to or from the wifly. 
+        </p>
+        <div class="projects">
+            <img src="img/tcp.png">
+        </div>
+        <h4>
+            <span class="text-secondary">Figure 4:</span> TCP 3-Way Handshake
+        </h4>
+        <p class="sm-heading">
+            This communication routine can be visualized in Figure 4. The problem which was encountered during this project was that a flask server was used. This caused issues because even though one would 
+            set up the wifly to have a keep alive TCP connection, the connection between the Wifly would occasionally drop. If there was a drop, a manual restart was needed in order to get the communciation back
+            up and running. In order to get past this problem, a NGINX proxy server was set up between the PIC32 boards and the Flask server.
+        </p>
+        <div class="projects">
+            <img src="img/nginx.png">
+        </div>
+        <h4>
+            <span class="text-secondary">Figure 5:</span> NGINX
+        </h4>
+        <p class="sm-heading">
+           With the NGINX proxy server set up, we were able to show 94% communication with a purposeful 6% erroneous messages. This was tested over 14 hours.
+        </p>
+        <h3 class="sm-heading">
+            <span class="text-secondary">A* Search Algorithm</span>
+        </h3>
+        <p class="sm-heading">
+            In order for each of the rovers to navigate through the maze of buildings to either get to the next token or to the next fire, an A* Search Algorithm was used. The primary problem encountered with using
+            this search Algorithm was that the PIC32 board did not have enough memory to complete certain calculations of this algorithm. 
+        </p>
+        <div class="projects">
+            <img src="img/astar.gif">
+        </div>
+        <h4>
+            <span class="text-secondary">Figure 6:</span> A* Algorithm
+        </h4>
+        <h3 class="sm-heading">
+            <span class="text-secondary">Task Diagram</span>
+        </h3>
+        <p class="sm-heading">
+            The task diagram shown in Figure 7 shows how all of the tasks ran onboard the firefighter rover. Each of the tasks represent a thread from software development. Each of these threads were controlled by FreeRTOS. 
+        </p>
+        <img src="img/task.png">
+        <h4>
+            <span class="text-secondary">Figure 7:</span> Task Diagram
+        </h4>
+        <h3 class="sm-heading">
+            <span class="text-secondary">Block Diagram</span>
+        </h3>
+        <p class="sm-heading">
+            The block diagram shown in Figure 8 represents all of the hardware components needed for the firefighter rover in order to do it's job.
+        </p>
+        <img src="img/blockdiagram.png">
+        <h4>
+            <span class="text-secondary">Figure 8:</span> Block Diagram
+        </h4>
     </main>
 
     <footer id="main-footer">
