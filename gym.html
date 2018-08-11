@@ -58,9 +58,75 @@
             HW/SW Optimized Signal <span class="text-secondary">Analyzer</span>
         </h1>
         <h2 class="sm-heading">
-            Check out some of my projects...
+            This is a networking hardware project which simulates a gym
         </h2>
-        
+        <h3 class="sm-heading">
+            <span class="text-secondary">Concept of Operations</span>
+        </h3>
+        <p class="sm-heading">
+                When approaching this project, we wanted to find a solution to a pressing problem facing the student population at Virginia Tech. We started off by brainstorming problems which each of us faced on a daily basis. This concluded with a list that included not finding parking, long lines in dining halls, not finding a place to study, and wait time at the gym. Since the problem with obesity is a problem which can be seen across the nation, we decided that working on the problem of wait times at the gym would not only have benefits at Virginia Tech, but could help elsewhere as well. With this problem settled on, we got down to deciding on the operation of this system. 
+        </p>
+        <p class="sm-heading">
+                To visualize the operation of the system, we will first depict a scenario for an imaginary user going through our Smart Gym. Imagine that John is heading into the gym for his Monday leg workout. During his walk from his car to the front door of the gym, John opens up his personal profile off of the gym’s website. Here, he is able to input the machines which he plans to use during his leg day routine. Once satisfied and at the front door, he will use his RFID token in order to scan into the gym. Not only will this scan unlock the door but it will notify the Smart Gym system that John has arrived and is now in the system. John now has two options when it comes to knowing what machine to go to first. Either he can look at his phone to see which of the machines he has listed on his profile is open, or he can look up at the TV on the wall of the gym to see a breakdown overview of all currently available and taken machines, as well as the demand for each machine (based on other gym members with routines that include the same machines for their stay at the gym). When he approaches a machine, there will be another RFID scanner attached to it. If he scans his RFID again, the scan will register back to the system that John is using that machine and to list on his profile that he has worked out at said machine. Once he is done, John will scan again to show that he is done with the machine. This process will continue until he finishes all of the workouts he had come to do. John’s day at the Smart Gym will conclude with him scanning out of the gym. 
+
+        </p>
+        <p class="sm-heading">
+                The team had three specific goals when it came to implementing the Smart Gym. The first of these goals is to reduce the wait times for equipment. By reducing the wait time, we expect an increase in user retention. Our second goal is to make it easier for the average gym user to create a profile. By creating a profile, we intend for the user to have an easier time establishing an effective workout routine. Our third and final goal for this project is to make it easier to know what time to go to the gym. One of the main gripes that people have with going to the gym is that it always seems to be busy. By going to the Smart Gym, we hope for the user to have an easier time knowing when to go.  
+        </p>
+        <p class="sm-heading">
+                During our brainstorming session we ended up deciding on this project because of the known rise of obesity in America. Nearly 78 million adults and 13 million children in the United States deal with the health and emotional effects of obesity every day. To combat this problem, organizations such as the American Heart Association encourage people to get at least an hour of activity in their lives. By accomplishing our goals of making the gym a more accessible place, we hope that more people who are impacted by obesity will use our facilities. 
+        </p>
+        <p class="sm-heading">
+                There are a few ways for a user to interact with the Smart Gym system. The first way is with an RFID chip to gain entry into the gym. Once inside, a user can use a mobile device to access their profiles in order to state which machines they plan to use that day. Along with this, a user can observe the status of the usage of machines on a TV on the wall of the gym. Finally when interacting with machines, a user can use their RFID token to state if they are or are not using the machine.  
+        </p>
+        <p class="sm-heading">
+                In the future, we as a team expect the Smart Gym to foster a new ease of use for gyms, encouraging more people to exercise. With this increased ease of use, we hope to see a decrease in heart disease and obesity in users as our system is used in more facilities. 
+        </p>
+        <h3 class="sm-heading">
+            <span class="text-secondary">System Overview</span>
+        </h3>
+        <div class="projects">
+                <img src="img/systemoverview.png">
+            </div>
+        <h4>
+            <span class="text-secondary">Figure 1:</span> System Diagram
+        </h4>
+        <p class="sm-heading">
+                Figure 1 is our proposed system diagram. As one can see from the diagram, there are two major pieces. There is a raspberry pi to serve as the server pi and then two more pis to serve as the equipment pis. The server pi is the main force of our system. It receives status from the equipment pis, keeps track of which users are in the gym through the RFID, and updates mongoDB and the flask page. On a high level, the equipment pis are placed on each machine in the gym and will be operated by a user in order to say if said piece of equipment is being used or not. What this means is that the user will scan their RFID tag against said equipment pi’s RFID reader in order to update the pi’s active/inactive status. 
+        </p>
+        <p class="sm-heading">
+                Now that the high level design is understood, we will take a more in depth look at how each piece will accomplish its given task. To clarity, we will cover Figure 1 from left to right. The RFID reader for the server pi gets your identification number, fetches your username from MongoDB and adds it to a list data structure of members currently in the gym. It is assumed the gym will use MongoDB to keep an updated database of members and profiles.MongoDB will store the user profiles, containing names correlating with identification numbers, along with two preset routines: one day for arms and one day for legs. 
+        </p>
+        <p class="sm-heading">
+                Moving up Figure 1, one can see that there is a Flask component connected to the server pi. The server will use a RESTful interface to update the flask page. In Figure 2, one can see a rough mock up of what the main flask page will look like. This will be the root page when a user goes to the the server hosted ip address the flask API is on. The boxes on the right side of Figure 2 are the machines which a gym user can exercise on. Green means that the machine is available and the red shows that the machine is in use. The number within the box represents the demand for said machine type. This means that the number inside of the box stands for the number of gym members signed into the gym who’s routine requires those machines.
+        </p>
+        <div class="projects">
+                <img src="img/mockup.png">
+        </div>
+        <h4>
+            <span class="text-secondary">Figure 2:</span> Mock up of the Main Flask Page
+        </h4>
+        <p class="sm-heading">
+                Using the python request library we will be able to send the equipment status in the form of changing the box colors from green to red or vice-versa. This will work by manipulating the <img> tag in the html. The number within the box will come from the list data structure hosted on the server. We will use a loop to iterate through the list of all members in the gym. For each active member we will parse out the routine they have chosen in their profile from mongoDB and use a count to establish each machine’s demand.
+        </p>
+        <p class="sm-heading">
+                The gym user personal profile page will be branched off of the routing “/home/name” where the “/name” is the individual gym member’s name. One can reference Figure 3 in order to see a rough mock up of how the page will be displayed. We will continue using our faithful gym user John as an example. When John logs on to access his personal profile on “/home/John”, he will first need to interact with a user login screen. The user login screen will consist of a username and password field for authentication. The username and password would have been set by the gym user when they signed up for the gym. 
+        </p>
+        <div class="projects">
+                <img src="img/profileflask.png">
+        </div>
+        <h4>
+            <span class="text-secondary">Figure 3:</span> Mock up of the Profile Flask Page
+        </h4>
+        <h3 class="sm-heading">
+            <span class="text-secondary">Testable Requirements</span>
+        </h3>
+        <p class="sm-heading">
+                The user can choose from a drop down menu what type of routine they would like to run through for their workout. Each of these routines will have preset machines that will be hardcoded to them. “Equipment used today” will display the equipment that the user has used so far in their workout. “Equipment left to complete routine” will display the equipment the user has left in order to complete their routine. This page will be refreshed every five seconds to reflect if the user has completed using one of the pieces of equipment in their “Equipment left to complete routine” list. This page will be receiving its updated values from the mongoDB database. 
+        </p>
+        <p class="sm-heading">
+                Moving to the right of Figure 1, one will notice two equipment pis connected to the the server pi by sockets. For server to equipment pi communication, socket connections will be made. The server pi will receive equipment statuses and RFID identification numbers from the equipment pi. The equipment pis send a status of active or inactive and the user’s RFID tag identification number to the server pi. When a tag is read the user will be alerted by a red LED turning off and a green LED turning on. When the user leaves they will scan out and the red LED will turn on while the green LED turns off. The equipment pis will properly set the colors of the LEDs by asserting voltage through GPIO output. 
+        </p>
     </main>
 
     <footer id="main-footer">

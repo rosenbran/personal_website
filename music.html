@@ -58,9 +58,17 @@
             Music <span class="text-secondary">Synthesizer</span>
         </h1>
         <h2 class="sm-heading">
-            Check out some of my projects...
+            Multi-threading C++ project to synthesize midi files to wav files
         </h2>
-        
+        <p class="sm-heading">
+            This was a project in order to convert midi files into wav files. I had a QT GUI on which the user was able to select an input midi file, then play, pause, or stop the track from playing.
+        </p>
+        <p class="sm-heading">
+            The project was split up into two threads. The first thread worked to have the QT GUI working. The second thread worked on converting the input midi file into a wav file. The QT Thread was connected to the Conversion thread by a thread safe queue going from GUI to Conversion thread. Going from the Conversion thread to the QT thread there was a thread safe double buffer. This double buffer ensured that the QT thread was not overwhelmed by how fast the conversion thread could create notes. The thread safe queue was used in order to send the input file and commands such as start, pause, and stop to the conversion thread.
+        </p>
+        <div class="schedule">
+            <img src="img/wavformat.JPG">
+        </div>
     </main>
 
     <footer id="main-footer">
