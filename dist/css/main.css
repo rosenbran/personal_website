@@ -207,13 +207,28 @@ main {
   grid-gap: 0.7rem;
   grid-template-columns: repeat(3, 1fr); }
   .projects img {
+    border: 3px white solid; }
+
+.mywork {
+  display: grid;
+  grid-gap: 0.7rem;
+  grid-template-columns: repeat(3, 1fr); }
+  .mywork img {
     border: 3px white solid;
     height: 300px;
     max-width: 400px; }
-    .projects img:hover {
+    .mywork img:hover {
       opacity: 0.5;
       border-color: #2fd16d;
       transition: all 0.5s ease-out; }
+
+.schedule {
+  display: grid;
+  grid-gap: 0.7rem;
+  grid-template-columns: repeat(3, 1fr); }
+  .schedule img {
+    width: 100%;
+    height: auto; }
 
 .btn, .btn-dark, .btn-light {
   display: block;

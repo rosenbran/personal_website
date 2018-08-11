@@ -58,9 +58,122 @@
             HW/SW Optimized Signal <span class="text-secondary">Analyzer</span>
         </h1>
         <h2 class="sm-heading">
-            Check out some of my projects...
+            This is an optimization project focused on reducing the number of clock cycles needed to compute a calculation. 
         </h2>
-        
+        <p class="sm-heading">
+           When starting out on this assignment, I knew that the challenge was how to best optimize the provided correlation machine. The challenge was set with a baseline run time of 460 million clock cycles and it was our job to accelerate this in any way we could. To beat this time, I knew that there were three main areas which I could approach.
+        </p>
+        <p class="sm-heading">
+            1). Do less computations 
+        </p>
+        <p class="sm-heading">
+            2). Do things in parallel
+        </p>
+        <p class="sm-heading">
+            3). Do things faster
+        </p>
+        <p class="sm-heading">
+            When starting to work on this project, I started by looking at the first category. From the first few weeks of class, I know that every bit of C-Code written requires the compiler to generate the equivalent Assembly Code within a .lst file. The most important part of the software which we were given was the block of code shown in Figure 2. This block of code is what generates the correlation value Maximum by iterating through L reference waveforms and N sample waveforms. The important thing to note about this loop is the fact that the innermost loop’s one line of code is going to have to be run thousands of times in order to accomplish the goal of looking at every iteration of these samples. 
+        </p>
+        <p class="sm-heading">
+            If one looks at Figure 1, they could get a better view of what exactly the base implementation of the correlation loop does. Critical to notice is the series of instructions in the K Loop. Since this series of instructions is within all three of the for loops, it will be run for every single sample. Looking back at the general idea of 1). Do less computations, this seemed like a good place to start. 
+        </p>
+        <h4>
+            <span class="text-secondary">Figure 1:</span> The Assembly output for the software
+        </h4>
+        <div class="schedule">
+                <img src="img/assembly.png">
+        </div>
+        <h4>
+            <span class="text-secondary">Figure 2:</span> Correlation Loop
+        </h4>
+        <div class="schedule">
+                <img src="img/correlation.png">
+        </div>
+        <p class="sm-heading">
+            Knowing that the first thing I wanted to do is reduce the number of assembly instructions, I went into the makefile and adjusted the compiler as shown in Figure 3 by adding the optimization flag. The optimization flag allows the user of to inform the compiler to cut down on as many assembly instructions as it can while generating the .lst file. 
+        </p>
+        <h4>
+            <span class="text-secondary">Figure 3:</span> Compiler Optimization Flag
+        </h4>
+        <div class="schedule">
+                <img src="img/crossflags.PNG">
+        </div>
+        <p class="sm-heading">
+            While using an optimization flag got rid of a few instructions, many different techniques could still be used to speed up this correlation program. At this point in the design I started to work on building a coprocessor. The first coprocessor which I started to work on focused on the operation of (j+i) % N and reference[i] * search[(j + i) % N];. I know that at this point I want to move any operations that I can from being in software to being in hardware. From just following the C code, I wrote a coprocessor to compute the (j+i) % N inside of the search array. Procedure wise, I added the Verilog file for the coprocessor into QSYS then I generated a new HPS from it. When it came to its point in the code, I used sync statement logic in order to place the values for j, I, and N into memory mapped registers. As usual, I had a counter sync statement after a blocking conditional to pull the correct values out of the memory mapped registers. Inside of the coprocessor, I used strategies used on homework 4-5 in order to transition C-code logic into Verilog statements. The top level of the coprocessor flows like so.
+        </p>
+        <p class="sm-heading">
+            SYNC1-> coprocessor.I = I, coprocessor.J = J, coprocessor.N = N--> Start Computing until done -> Result= coprocessor.Result -> SYNC0
+        </p>
+        <p class="sm-heading">
+            Once I had this general structure laid out, I wrote assign statements in order to read out the correct variables from the memory mapped registers. Along with this I added the traditional Verilog logic to account for if a reset is asserted (set the registers to 0) else just hold the appropriate values. The most important part of this coprocessor is shown in Figure 4. As one can see, I make sure to load the values before telling the Verilog module holding the logic for (j+i) % N to run. Once completed running, the inner module will let out a control signal announcing it has completed calculations and the state of Figure 4 will continue on.
+        </p>
+        <h4>
+            <span class="text-secondary">Figure 4:</span> Format of the Coprocessor for (I+j)%N
+        </h4>
+        <div class="schedule">
+                <img src="img/format_coprocessor.png">
+        </div>
+        <p class="sm-heading">
+            Moving onto the inner Verilog module, I know that I first need to add the values of J and I together than modulo that against the value of N. The unsigned addition of J and I is the first calculation needed to be done and this can be done in the first state of this FSM. The tricky part of this calculation is the process to find the modulo of (j+i) and N. As we all know, the modulo of a value is just the process to find the remainder for a division of two things. Keeping this in mind, I looked back at the work we did to compute quotient and remainders and worked with the logic shown in Figure 5. It is important to note here that the numerator here was calculated to be (j+i). Once the value for R and Q are found, they are assigned on the output values from this module and a done signal is emitted. This done signal will inform the coprocessor that is currently stuck in some SYNC statements to continue on. 
+        </p>
+        <h4>
+            <span class="text-secondary">Figure 5:</span> Modulo Logic
+        </h4>
+        <div class="schedule">
+                <img src="img/modulo.png">
+        </div>
+        <p class="sm-heading">
+            Once the logic to speed up a portion of the C-code was implemented, I wanted to add another coprocessor to deal with the aspect of the innermost loop of the correlation equation that += itself. I wanted to make sure to do this for two reasons. The first being that I could speed up the process of the addition but secondly, I could add in a DMA to speed up the process of writing from memory location to location. As one can see from Figure 6, By adding a coprocessor and a DMA, one can keep the calculation between on chip memory locations. 
+        </p>
+        <h4>
+            <span class="text-secondary">Figure 6:</span> DMA and Coprocessor
+        </h4>
+        <div class="schedule">
+                <img src="img/dma.png">
+        </div>
+        <p class="sm-heading">
+            To do this, I added another coprocessor. This coprocessor has the job of just doing addition. Since I was not able to encapsulate all of the stuff on the right side of the equation (of the correlate loop) at this point, I wanted to just handle the += aspect of doing the sum. I took the value calculated on the right side of the equation and loaded it into mem1. Once inside of mem1, I passed the values, using DMA functions, to the coprocessor. I modeled this logic based off of the sumDemo lecture. A representation of how I accomplished this aspect of the acceleration is shown in Figure 7.
+        </p>
+        <h4>
+            <span class="text-secondary">Figure 7:</span> DMA with += logic
+        </h4>
+        <div class="schedule">
+                <img src="img/dmalogic.png">
+        </div>
+        <p class="sm-heading">
+            After working on those last two implementations, I wanted to see a greater speed up. After seeing what was done in class, I worked on how to encapsulate all the correlator logic into one coprocessor. The difficulty with this is I had to very much so change around my thought process when it came to doing the calculation. Up until this point, I viewed the hardware implementations as just a side way of doing math for speed. Upon careful thought, and a lot of Professor Schaumont’s help, a way to do the inner two loops and their logic emerges. 
+            One must start by adding a new coprocessor into QSYS. When it comes to connections, one could reference Figure 8.         
+        </p>
+        <h4>
+            <span class="text-secondary">Figure 8:</span> DMA+Coprocessor QSYS layout
+        </h4>
+        <div class="schedule">
+                <img src="img/dmaqsys.png">
+        </div>
+        <p class="sm-heading">
+            By setting up the layout as such, you are allowing the coprocessor to write to the DMA and have access to the AXI bus along with the DMA controller will be able to have access to the LW-AXI. Once this is all set up, the question becomes how to translate software logic into a hardware setting. What is first important to understand is how the program uses a sliding window to add up all of the values. 
+        </p>
+        <h4>
+            <span class="text-secondary">Figure 9:</span> Sliding Window
+        </h4>
+        <div class="schedule">
+                <img src="img/slidingwindow.png">
+        </div>
+        <p class="sm-heading">
+                The sliding window principle is basically that one needs to replicate how the software loops iterates through 128 values. In order to do so, one needs to save 16 values to a register then continue to shift the values in the register until all values are polled. The tricky part is when the 16-value shifter reaches index 113. At this point the register needs to wrap around to grab values at the 0 index. This will continue until the first value in the shifter is 127 and the last value is 14. 
+                What must be accomplished next is writing this sliding window principle into Verilog.  
+        </p>
+        <h4>
+            <span class="text-secondary">Figure 10:</span> Hardware layout of the shift coprocessor
+        </h4>
+        <div class="schedule">
+                <img src="img/hardwarelayout.png">
+        </div>
+        <p class="sm-heading">
+                To start going over the coprocessor shown in Figure 10, let us start with the shift block. This is really where the sliding window is being completed. Just to start logically going through this, the input to this system is DATAIN from the DMA. This will be all the values needed to be summed and multiplied to reach the answer of the maximum. The DATAIN is fed into a mux at the very start of the shift block. The mux is used to decide if the shift registers should be fed by DATAIN from the DMA or from the end of the 112-shift register. This will be better explained as the functionality of the shift register is described. As the DATAIN is fed through the mux at first, it fills up the 16 bit shift register. After it is filled with 16 bits, the values are fed down into the summation module. More importantly, after the 16 bit shift register is filled, when another value comes in from DATAIN, the 16th value from the shift register is pushed out into the 112-shift register. This will continue to happen until the 112-shift register is filled. Once it is filled, you need to notify the mux that you are done reading in values from the DATAIN and now will be using values from the 112-shift register. This will allow the program to deal with the wrap around effect shown in Figure 9. Looking down at the summation module, all 16 of the tags will be added up. After this, we need to multiply by the value of template[k] to match the functionality from the correlation loop. To do this, I placed all of the values of template[k] into memory mapped registers than I multiplied each of these by their corresponding sum. I had to implement a counter for 0-15 to make sure I was multiplying by the correct template[k]. This also allowed me to know at what index the max was at. 
+                This module is placed inside of the hw_bulkcorrelate such that it the middle two loops are eliminated. The outermost look must persist and will be used to keep calling the DMA.                 
+        </p>
     </main>
 
     <footer id="main-footer">

@@ -58,9 +58,172 @@
             RF <span class="text-secondary">Spectrum</span>
         </h1>
         <h2 class="sm-heading">
-            Check out some of my projects...
+            Computer Vision and RF Spectrum Signature Recognition
         </h2>
-        
+        <h3 class="sm-heading">
+            <span class="text-secondary">Executive Summary</span>
+        </h3>
+        <p class="sm-heading">
+            Radio Signals Classification and identification are complex activities requiring significant experience. The aim is  to evaluate the utility of image classification for Signals Classification which will extend the QRC Wideband Transcoder product line features.  Our customers, QRC technologies think that  the technology of a YOLO-like image classifier could act as a technician training tool, reference guide or “RF Google” to the analysis of some RF displays. 
+        </p>
+        <p class="sm-heading">
+            This project will utilize open source computer vision pattern recognition software and train its classification engine to identify signals in a radio frequency spectrum display.  The classification software may run in the WBT [1] environment as installed software. This proposal specifies the equipment and facilities we will require for these tasks. The equipment listing is in section 6.0 under table 2. 
+        </p>
+        <p class="sm-heading">
+            This final project report highlights our description of the problem statement, objectives and our approach to solve the problem. We will cover the costs incurred and risks taken. In Table 1, one will see a breakdown of our objectives at the start of this project.
+        </p>
+        <p class="sm-heading">
+            We have specified a methodical breakdown of tasks, labor and costs throughout the duration of the project. The final report contains a list of Contract Line items and their deliverable dates. As per our work breakdown structure, we completed Monthly customer reports and had a proof of concept ready by mid-March, 2018. We will provide the deliverables as required by our customer, which include a Lessons Learned Report, How to Use manual, Video-walk through demonstration and a poster presentation for the class.
+        </p>
+        <h3 class="sm-heading">
+            <span class="text-secondary">Description of the Problem</span>
+        </h3>
+        <p class="sm-heading">
+            QRC has the ability to collect vast amounts of raw, unclassified radio frequency signal data. Currently, there isn’t a way to automatically analyze and classify this data. The equipment that technicians use to manually analyze RF signals is complex, and it can be difficult to train new users, especially when they don’t know what kind of a signal they are looking at. Manual signal classification is a challenging task for inexperienced technicians, and it would be valuable to separate that process from the process of learning to use the analysis equipment. 
+        </p>
+        <h3 class="sm-heading">
+            <span class="text-secondary">Objective</span>
+        </h3>
+        <p class="sm-heading">
+            For this two semester long project, there are many objectives needing to be met. These objectives are laid out in Table 1. 
+        </p>
+        <div class="projects">
+            <img src="img/objectives.png">
+        </div>
+        <h4>
+            <span class="text-secondary">Table 1:</span> Objectives
+        </h4>
+
+        <h3 class="sm-heading">
+            <span class="text-secondary">Project Schedule</span>
+        </h3>
+        <p class="sm-heading">
+            Following what we proposed in the fall, Figures 1-4 show the tasks and the status of how our team accomplished each of the tasks inside of the WBS. The fall semester focused around setting up and collecting all of the necessary equipment needed for the design spring semester. Looking at Figures 2-4 one can see most of the advancement towards completing the Objectives were done in the second semester of this course.
+        </p>
+        <div class="projects">
+            <img src="img/rf-fig-1.png">
+        </div>
+        <div class="projects">
+            <img src="img/rf-fig-2.png">
+        </div>
+        <h4>
+            <span class="text-secondary">Figure 1:</span> Schedule for fall 2017
+        </h4>
+
+        <div class="projects">
+            <img src="img/rf-fig-3.png">
+        </div>
+        <h4>
+            <span class="text-secondary">Figure 2:</span> Schedule for February 2018
+        </h4>
+        <div class="schedule">
+            <img src="img/rf-fig-4.png">
+        </div>
+        <h4>
+            <span class="text-secondary">Figure 3:</span> Schedule for March 2018
+        </h4>
+        <div class="schedule">
+            <img src="img/rf-fig-5.png">
+        </div>
+        <h4>
+            <span class="text-secondary">Figure 4:</span> Schedule for April 2018
+        </h4>
+        <h3 class="sm-heading">
+            <span class="text-secondary">Approach</span>
+        </h3>
+        <p class="sm-heading">
+            In order to achieve the objectives given to us by QRC, we selected TensorFlow as the machine learning software tool to use. TensorFlow is an open-source tool for high performance numerical computation which is ideal for the type of network which we would intend to create, the Convolutional Neural Network (CNN) [2]. When provided the initial project from QRC, we were recommended to use another open source software tool called YOLO (“You Only Look Once”). During the first semester of this course, we decided to use TensorFlow over YOLO because it has strong support for machine learning and deep learning. Along with this, it has strong core libraries and tons of abundant, readily available documentation. Having the readily available documentation was critical for us when making this decision. As a team, we have had limited experience working with machine learning tools. We wanted to work with a service which had a sophisticated documentation in order for us to be able to learn and effectively use the service in two semesters. 
+        </p>
+        <p class="sm-heading">
+            The approach used towards this project includes TensorFlow and Python libraries to develop a 4-category, 5-layered [3] CNN to identify the three target signals that QRC requested along with random noise. In order to provide the deliverables for QRC, we started by building four separate binary classifiers and then combining these networks to create a four category CNN.
+        </p>
+        <h3 class="sm-heading">
+            <span class="text-secondary">Equipment and Facilities</span>
+        </h3>
+        <p class="sm-heading">
+            Table 2 highlights the equipment and facilities we require from both the customer and VT for the completion of our project.
+        </p>
+        <div class="schedule">
+            <img src="img/equipment.PNG">
+        </div>
+        <h4>
+            <span class="text-secondary">Table 2:</span> Equipment and Facilities
+        </h4>
+        <h3 class="sm-heading">
+            <span class="text-secondary">Hardware and Software Setup</span>
+        </h3>
+        <div class="schedule">
+            <img src="img/wbt.png">
+        </div>
+        <h4>
+            <span class="text-secondary">Figure 2:</span> WBT
+        </h4>
+        <p class="sm-heading">
+            The most important piece of equipment which we were supplied this semester was the Wide Band Transcorder (WBT). The WBT was supplied by QRC and is a fully self-contained RF recording and playback system. Jacques obtained a dedicated laptop from Virginia Tech S.W.A.T for which we could connect the WBT to. This connection was needed so that we could properly get signal samples off of the WBT. 
+        </p>
+        <p class="sm-heading">
+            We were able to get the signal samples off of the WBT by following the following steps. First we would use an Ethernet Cable to connect the WBT to the dedicated laptop. Next we would download VNC Viewer onto the dedicated laptop. Once VNC Viewer was downloaded onto the laptop, we would go into the properties and make sure that the viewer is in Ethernet Mode. While in the property settings, we set the manual IP address to 172.18.02, subnet 255.252.0., and prepared DNS server to 8.8.8.8. At this point in the process, the WBT screen should be displayed on the local machine. Once the screen is displayed onto the local machine, we can use software on said machine to capture the screen. 
+        </p>
+        <h3 class="sm-heading">
+            <span class="text-secondary">Data Collection</span>
+        </h3>
+        <p class="sm-heading">
+            In order to build the classifiers for this project, we needed to collect a training dataset. In order to build this dataset, we followed these steps. First, we set off to recording the RF Signals. We were tasked with determining the signals shown in Figure 3 so we had to focus on collecting samples of these signals. First off, we played back the sample signal data files provided by QRC. We manipulated the WBT display in order to display a waterfall plot of the values with a specified color scheme. 
+        </p>
+        <div class="schedule">
+            <img src="img/signals.PNG">
+        </div>
+        <h4>
+            <span class="text-secondary">Figure 3:</span> Waterfall plots for FM, DMR, and LTE signals
+        </h4>
+        <p class="sm-heading">
+            Once we have the WBT set up in order to display the waterfall graphs, we connect the WBT to our dedicated laptop as was described in Section 7.0. On the dedicated laptop, we have a custom Python script used to take screenshots of the VNC viewer. All of these screenshots are saved in their own respective signal directory to be accessed later by the classifiers. It is important to the classifier that the screenshots were saved as .JPEG files so the Python Script takes this into account. 
+        </p>
+        <p class="sm-heading">
+            Now that we have all of the samples being saved to their respective directories, we needed to preprocess these images. What is meant by preprocessing images is that the classifier only can take images of 100x100 dimensions. We needed to make sure that all of the screenshots being generated fit this dimension. In order to accomplish this goal, we utilized Open-CV libraries. Open-CV allowed us to uniformly transform the images to the correct format for the CNN. 
+        </p>
+        <h3 class="sm-heading">
+            <span class="text-secondary">TensorFlow Setup</span>
+        </h3>
+        <p class="sm-heading">
+            Now that we have the desired signal samples collected, we started to build the CNN classifiers. The classifiers had an input image of 100x100 with an input layer volume size of 100x100x3. As a side note, the reason that it is x3 is because we are accounting for r-g-b color channels. Next, we have a learning rate of 0.001, a Stochastic Gradient Descent, a categorical cross-entropy loss function, a training dataset size of 491 images, and a validation ratio of 4. With all of these settings selected, we made sure to set the input of the model as a numpy array of 3D pixel data with 100 epochs. 
+        </p>
+        <h3 class="sm-heading">
+            <span class="text-secondary">Proof of Concept Binary Classifiers</span>
+        </h3>
+        <p class="sm-heading">
+            When we were first working on creating a classifier to identify our target signals, we split the work up into three so each of us could work on a classifier at a time. This allocation of the work allowed for us to develop binary classifiers. The results of this work can be seen in Figure 4. The LTE vs Non-LTE Classifier saw 86.42% accuracy, the FV vs non-FM saw 93.65% accuracy, and the DMR vs non-DMR classifier saw 90.81% accuracy. 
+        </p>
+        <div class="schedule">
+            <img src="img/binaryresults.png">
+        </div>
+        <h4>
+            <span class="text-secondary">Figure 4:</span> Binary Classifier Results
+        </h4>
+        <h3 class="sm-heading">
+            <span class="text-secondary">Four Category Classifier</span>
+        </h3> 
+        <p class="sm-heading">
+            Once we saw that the proof of concept worked for our application, we moved on to complete a four-category classifier. This lead us to create a five layered CNN. This time, we made is so that the four target classes for the classifier were LTE, FM, DMR, and noise. After training, we were able to see an accuracy of 90.54%. The results of this training can be seen in Figure 5.  
+        </p>
+        <div class="schedule">
+            <img src="img/classifierresults.png">
+        </div>
+        <h4>
+            <span class="text-secondary">Figure 5:</span> Four Class Training Accuracy
+        </h4>
+        <h3 class="sm-heading">
+            <span class="text-secondary">Live Demonstration</span>
+        </h3> 
+        <p class="sm-heading">
+                In the pursuit of creating an interesting demonstration ahead of the Poster Project event, we worked on creating a live demonstration of our classifiers. This demo uses the four-category classifier which was explained in Section 11.0. We adapted the python script in order to take in live sample values and provide it directly to a trained classifier. This resulted in a real time identification of signals. During our live demonstration, we had an 89% accuracy for each of the predictions. The structure of the demonstration is depicted in Figure 6.
+        </p>
+        <div class="schedule">
+            <img src="img/livedemo.png">
+        </div>
+        <h4>
+           <span class="text-secondary">Figure 6:</span> Flow Chart of the live demo
+        </h4>                         
     </main>
 
     <footer id="main-footer">
