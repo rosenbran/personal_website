@@ -83,7 +83,7 @@
             <span class="text-secondary">Game Board</span>
         </h3>
         
-        <div class="projects">
+        <div class="schedule">
             <img src="img/gameboard.png">
         </div>
         <h4>
@@ -100,7 +100,7 @@
             <span class="text-secondary">Sensors</span>
         </h3>
         
-        <div class="projects">
+        <div class="schedule">
             <img src="img/irsensor.png">
         </div>
         <h4>
@@ -113,7 +113,7 @@
             creating values sequentially, there will be spikes of power usage for each sensor. In order to account for this spread of values, I created a lookup table for each of the 
             sensors for each distance possible in the range for the sensor. 
         </p>
-        <div class="projects">
+        <div class="schedule">
             <img src="img/colorsensor.png">
         </div>
         <h4>
@@ -131,7 +131,7 @@
             PIC32 boards were given a WiFly chip. These are configuable devices which are able to fill up an onboard FIFO buffer through UART communication in order to send a tcp message. On the PIC board,
             there are two hardware interrupts in order to send and receive messages. These two interrupts will poll two char variable buffers to push characters to or from the wifly. 
         </p>
-        <div class="projects">
+        <div class="schedule">
             <img src="img/tcp.png">
         </div>
         <h4>
@@ -142,7 +142,7 @@
             set up the wifly to have a keep alive TCP connection, the connection between the Wifly would occasionally drop. If there was a drop, a manual restart was needed in order to get the communciation back
             up and running. In order to get past this problem, a NGINX proxy server was set up between the PIC32 boards and the Flask server.
         </p>
-        <div class="projects">
+        <div class="schedule">
             <img src="img/nginx.png">
         </div>
         <h4>
@@ -158,7 +158,7 @@
             In order for each of the rovers to navigate through the maze of buildings to either get to the next token or to the next fire, an A* Search Algorithm was used. The primary problem encountered with using
             this search Algorithm was that the PIC32 board did not have enough memory to complete certain calculations of this algorithm. 
         </p>
-        <div class="projects">
+        <div class="schedule">
             <img src="img/astar.gif">
         </div>
         <h4>
@@ -180,6 +180,7 @@
         <p class="sm-heading">
             The block diagram shown in Figure 8 represents all of the hardware components needed for the firefighter rover in order to do it's job.
         </p>
+        
         <img src="img/blockdiagram.png">
         <h4>
             <span class="text-secondary">Figure 8:</span> Block Diagram
